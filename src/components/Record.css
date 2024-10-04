@@ -1,0 +1,93 @@
+/* Основной контейнер страницы записи */
+.record-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: #fff;
+}
+
+/* Заголовок */
+h1 {
+    font-size: 3rem;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+/* Секция записи речи */
+.record-section {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Кнопка записи */
+.record-button {
+    background-color: #1f4037;
+    color: #fff;
+    border: none;
+    padding: 14px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.record-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Транскрипция текста */
+.transcript {
+    font-size: 1.5rem;
+    margin-top: 20px;
+    color: #fff;
+    opacity: 0.9;
+}
+
+/* Секция загрузки аудиофайла */
+.upload-section {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Поле для загрузки файлов */
+.upload-input {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #1f4037;
+    border: 2px solid #1f4037;
+    font-size: 1.2rem;
+}
+
+/* Кнопка преобразования аудиофайла */
+.process-button {
+    background-color: #283c86;
+    color: #fff;
+    border: none;
+    padding: 14px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 20px;
+}
+
+.process-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+}
