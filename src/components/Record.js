@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Record.css'; // Подключаем обновленный файл с CSS
+
 
 const Record = () => {
     const [transcript, setTranscript] = useState('');
