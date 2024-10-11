@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-
+import React, { useState, useContext } from 'react';
+import { HistoryContext } from '../contexts/HistoryContext';
 
 const Record = () => {
     const [transcript, setTranscript] = useState('');
     const [audioFile, setAudioFile] = useState(null);
+    
+    // Use addToHistory from context
+    const { addToHistory } = useContext(HistoryContext);
 
-    // Функция для записи голоса с помощью SpeechRecognition
+    // Function to start voice recording using SpeechRecognition
     const handleSpeechRecognition = () => {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) {
@@ -19,12 +22,13 @@ const Record = () => {
         recognition.onresult = (event) => {
             const speechResult = event.results[0][0].transcript;
             setTranscript(speechResult);
+            addToHistory(speechResult); // Add to history
         };
 
         recognition.start();
     };
 
-    // Функция для обработки загруженного аудиофайла
+    // Function to handle audio file upload
     const handleAudioUpload = (event) => {
         const file = event.target.files[0];
         if (file && file.type.includes('audio')) {
@@ -34,7 +38,7 @@ const Record = () => {
         }
     };
 
-    // Функция для обработки загруженного аудио
+    // Function to process the uploaded audio file
     const handleAudioProcessing = () => {
         if (!audioFile) {
             alert("Загрузите аудиофайл перед преобразованием.");
@@ -46,6 +50,10 @@ const Record = () => {
             const audioData = event.target.result;
             console.log('Загруженные аудиоданные:', audioData);
             alert('Аудиофайл успешно загружен и готов к обработке.');
+            // Mock audio-to-text conversion logic
+            const mockText = 'Преобразованный текст из аудиофайла'; // Example
+            setTranscript(mockText);
+            addToHistory(mockText); // Add the result to history
         };
 
         reader.readAsArrayBuffer(audioFile);
@@ -56,7 +64,7 @@ const Record = () => {
             <h1>Жазба жасау</h1>
 
             <div className="record-section">
-                {/* Кнопка для записи речи */}
+                {/* Button to start recording speech */}
                 <button className="record-button" onClick={handleSpeechRecognition}>Начать запись</button>
                 <p className="transcript">{transcript}</p>
             </div>
