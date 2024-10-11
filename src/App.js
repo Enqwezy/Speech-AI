@@ -1,5 +1,5 @@
-// App.js
 import React, { useState } from 'react';
+
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Menu as MenuIcon, History, Mic, Settings, ShoppingCart, Home as HomeIcon, AccountCircle } from '@mui/icons-material';
@@ -10,11 +10,12 @@ import Cart from './components/Cart';
 import HistoryPage from './components/History';
 import SettingsPage from './components/Settings';
 import Feedback from './components/Feedback'; 
-import './App.css'; // Стили
+import { HistoryProvider } from './contexts/HistoryContext'; // Импортируем контекст истории
+import './App.css';
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  
+
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
   };
@@ -30,47 +31,46 @@ function App() {
   ];
 
   return (
-    <Router>
-      <div className="App">
-        {/* Верхняя панель */}
-        <AppBar position="fixed" className="app-bar">
-          <Toolbar>
-            <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
-              <MenuIcon />
-            </IconButton>
-            <h2 className="app-title">Speech AI Platform</h2>
-          </Toolbar>
-        </AppBar>
+    <HistoryProvider>
+      <Router>
+        <div className="App">
+          <AppBar position="fixed" className="app-bar">
+            <Toolbar>
+              <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
+                <MenuIcon />
+              </IconButton>
+              <h2 className="app-title">Speech AI Platform</h2>
+            </Toolbar>
+          </AppBar>
 
-        {/* Боковое меню */}
-        <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-          <div className="menu-header">
-            <h3>Меню</h3>
+          <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+            <div className="menu-header">
+              <h3>Меню</h3>
+            </div>
+            <List className="menu-list">
+              {menuItems.map((item, index) => (
+                <ListItem button key={index} component={Link} to={item.path} className="menu-item">
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItem>
+              ))}
+            </List>
+          </Drawer>
+
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/record" element={<Record />} />
+              <Route path="/results" element={<Results />} />
+              <Route path="/history" element={<HistoryPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/feedback" element={<Feedback />} />
+            </Routes>
           </div>
-          <List className="menu-list">
-            {menuItems.map((item, index) => (
-              <ListItem button key={index} component={Link} to={item.path} className="menu-item">
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-
-        {/* Основной контент */}
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/record" element={<Record />} />
-            <Route path="/results" element={<Results />} />
-            <Route path="/history" element={<HistoryPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/feedback" element={<Feedback />} />
-          </Routes>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </HistoryProvider>
   );
 }
 
