@@ -1,15 +1,15 @@
+// App.js
 import React, { useState } from 'react';
-
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Menu as MenuIcon, History, Mic, Settings, ShoppingCart, Home as HomeIcon, AccountCircle } from '@mui/icons-material';
 import Home from './components/Home';
 import Record from './components/Record';
 import Results from './components/Results';
-import Cart from './components/Cart';
 import HistoryPage from './components/History';
 import SettingsPage from './components/Settings';
-import Feedback from './components/Feedback'; 
+import Cart from './components/Cart';
+import Feedback from './components/Feedback';
 import { HistoryProvider } from './contexts/HistoryContext'; // Импортируем контекст истории
 import './App.css';
 
