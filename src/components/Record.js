@@ -4,6 +4,7 @@ import { HistoryContext } from '../contexts/HistoryContext';
 
 const Record = () => {
   const [transcript, setTranscript] = useState('');
+  const [audioFile, setAudioFile] = useState(null);
   const [videoLink, setVideoLink] = useState('');
   const { addToHistory } = useContext(HistoryContext);
 
@@ -31,33 +32,35 @@ const Record = () => {
   const handleAudioUpload = (event) => {
     const file = event.target.files[0];
     if (file && file.type.includes('audio')) {
-      handleAudioProcessing(file); // автоматическое преобразование после загрузки
+      setAudioFile(file);
     } else {
       alert("Пожалуйста, выберите аудиофайл.");
     }
   };
 
   // Функция для обработки аудиофайла
-  const handleAudioProcessing = (file) => {
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      const audioData = event.target.result;
-      try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        await audioContext.decodeAudioData(audioData);
+  // Функция для обработки аудиофайла
+const handleAudioProcessing = () => {
+  if (!audioFile) {
+    alert("Загрузите аудиофайл перед преобразованием.");
+    return;
+  }
 
-        // Используем mockText для отображения результата
-        const mockText = 'Преобразованный текст из аудиофайла';
-        setTranscript(mockText);
-        addToHistory(mockText);
-      } catch (error) {
-        console.error("Ошибка обработки аудио:", error);
-        alert("Произошла ошибка при обработке аудио.");
-      }
-    };
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const audioData = event.target.result;
 
-    reader.readAsArrayBuffer(file);
+    // Используем audioData, например, выводим его в консоль
+    console.log('Аудиоданные загружены:', audioData);
+
+    const mockText = 'Преобразованный текст из аудиофайла';
+    setTranscript(mockText);
+    addToHistory(mockText);
   };
+
+  reader.readAsArrayBuffer(audioFile);
+};
+
 
   // Функция для обработки видео по ссылке
   const handleVideoLinkProcessing = () => {
@@ -84,6 +87,7 @@ const Record = () => {
       {/* Секция для загрузки аудиофайла */}
       <div className="upload-section">
         <input type="file" accept="audio/*" onChange={handleAudioUpload} />
+        <button onClick={handleAudioProcessing}>Преобразовать файл</button>
       </div>
 
       {/* Секция для ввода ссылки на видео */}
@@ -96,8 +100,6 @@ const Record = () => {
         />
         <button onClick={handleVideoLinkProcessing}>Преобразовать видео</button>
       </div>
-
-      <p>{transcript}</p>
     </div>
   );
 };
