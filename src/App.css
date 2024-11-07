@@ -95,6 +95,166 @@ body {
   text-align: center;
 }
 
+/* Feedback Form Styles */
+.feedback-section {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: auto;
+}
+
+.feedback-section input,
+.feedback-section textarea {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1.2rem;
+}
+
+.feedback-section button {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: #283c86;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.feedback-section button:hover {
+  background-color: #1d3557;
+}
+
+/* App.css */
+
+.record-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.record-section,
+.upload-section,
+.video-link-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.record-section button,
+.upload-section button,
+.video-link-section button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #283c86;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.record-section button:hover,
+.upload-section button:hover,
+.video-link-section button:hover {
+  background-color: #1d3557;
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 70%;
+  max-width: 400px;
+  font-size: 1rem;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* App.css */
+
+/* Основные стили контейнера */
+.auth-container {
+  max-width: 400px;
+  margin: 5% auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+/* Заголовок */
+.auth-container h2 {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Стиль для формы */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Поля ввода */
+.auth-form input[type="text"],
+.auth-form input[type="password"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+.auth-form input[type="text"]:focus,
+.auth-form input[type="password"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Кнопка */
+.auth-form button {
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Ссылка на регистрацию */
+.auth-container p {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.auth-container a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+
+
+
 h1 {
   font-size: 4rem;
   color: #283c86;

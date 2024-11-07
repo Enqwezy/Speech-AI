@@ -13,7 +13,7 @@ const Home = () => {
           <Link to="/record">
             <button className="primary-btn">Start Recording</button>
           </Link>
-          <Link to="/upload">
+          <Link to="/record">
             <button className="secondary-btn">Upload Audio</button>
           </Link>
         </div>

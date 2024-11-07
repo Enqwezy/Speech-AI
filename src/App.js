@@ -1,23 +1,34 @@
 // App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
+import { AppBar, Toolbar, IconButton, Avatar, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Menu as MenuIcon, History, Mic, Settings, ShoppingCart, Home as HomeIcon, AccountCircle } from '@mui/icons-material';
 import Home from './components/Home';
+import UsersList from './components/UsersList';
 import Record from './components/Record';
 import Results from './components/Results';
 import HistoryPage from './components/History';
 import SettingsPage from './components/Settings';
 import Cart from './components/Cart';
 import Feedback from './components/Feedback';
-import { HistoryProvider } from './contexts/HistoryContext'; // Импортируем контекст истории
+import Login from './components/Login';
+import Register from './components/Register';
+import { HistoryProvider } from './contexts/HistoryContext';
 import './App.css';
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const toggleDrawer = (open) => () => {
-    setDrawerOpen(open);
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (storedUser) setUser(storedUser);
+  }, []);
+
+  const toggleDrawer = (open) => () => setDrawerOpen(open);
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser');
+    setUser(null);
   };
 
   const menuItems = [
@@ -28,6 +39,7 @@ function App() {
     { text: 'Параметрлер беті', icon: <Settings />, path: '/settings' },
     { text: 'Корзина', icon: <ShoppingCart />, path: '/cart' },
     { text: 'Обратная связь', icon: <AccountCircle />, path: '/feedback' },
+    { text: 'Пользователи', icon: <AccountCircle />, path: '/users' },
   ];
 
   return (
@@ -40,6 +52,15 @@ function App() {
                 <MenuIcon />
               </IconButton>
               <h2 className="app-title">Speech AI Platform</h2>
+              {user ? (
+                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+                  <Avatar style={{ marginRight: 10 }}>{user.name[0]}</Avatar>
+                  <span>{user.name}</span>
+                  <button onClick={handleLogout} style={{ marginLeft: 20 }}>Выйти</button>
+                </div>
+              ) : (
+                <Link to="/login" style={{ marginLeft: 'auto', color: '#fff' }}>Войти</Link>
+              )}
             </Toolbar>
           </AppBar>
 
@@ -59,13 +80,16 @@ function App() {
 
           <div className="content">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/record" element={<Record />} />
-              <Route path="/results" element={<Results />} />
-              <Route path="/history" element={<HistoryPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/feedback" element={<Feedback />} />
+              <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
+              <Route path="/record" element={user ? <Record /> : <Navigate to="/login" />} />
+              <Route path="/results" element={user ? <Results /> : <Navigate to="/login" />} />
+              <Route path="/history" element={user ? <HistoryPage /> : <Navigate to="/login" />} />
+              <Route path="/settings" element={user ? <SettingsPage /> : <Navigate to="/login" />} />
+              <Route path="/cart" element={user ? <Cart /> : <Navigate to="/login" />} />
+              <Route path="/feedback" element={user ? <Feedback /> : <Navigate to="/login" />} />
+              <Route path="/login" element={<Login setUser={setUser} />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/users" element={user ? <UsersList /> : <Navigate to="/login" />} /> {/* Новый маршрут */}
             </Routes>
           </div>
         </div>

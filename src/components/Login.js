@@ -1,46 +1,51 @@
-// src/components/Login.js
-import React, { useState } from "react";
-import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+// components/Login.js
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+function Login({ setUser }) {
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      alert("Вход успешен");
-    } catch (err) {
-      setError(err.message);
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const existingUser = storedUsers.find((user) => user.name === name && user.password === password);
+
+    if (existingUser) {
+      localStorage.setItem('currentUser', JSON.stringify(existingUser));
+      setUser(existingUser);
+      navigate('/');
+    } else {
+      alert('Неправильное имя пользователя или пароль');
     }
   };
 
   return (
-    <div>
+    <div style={{ padding: '20px', textAlign: 'center' }}>
       <h2>Вход</h2>
       <form onSubmit={handleLogin}>
         <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
+          type="text"
+          placeholder="Имя пользователя"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
         />
         <input
           type="password"
+          placeholder="Пароль"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Пароль"
           required
         />
         <button type="submit">Войти</button>
-        {error && <p>{error}</p>}
       </form>
+      <p>
+        Нет аккаунта? <a href="/register">Зарегистрироваться</a>
+      </p>
     </div>
   );
-};
+}
 
 export default Login;
