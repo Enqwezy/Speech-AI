@@ -43,7 +43,7 @@ function App() {
   ];
 
   return (
-    <HistoryProvider>
+    <HistoryProvider currentUser={user}>
       <Router>
         <div className="App">
           <AppBar position="fixed" className="app-bar">

@@ -1,29 +1,45 @@
-// src/contexts/HistoryContext.js
-import React, { createContext, useState } from 'react';
+// HistoryContext.js
+import React, { createContext, useState, useEffect } from 'react';
 
 export const HistoryContext = createContext();
 
-export const HistoryProvider = ({ children }) => {
-    const [history, setHistory] = useState([]);
+export const HistoryProvider = ({ children, currentUser }) => {
+  const [history, setHistory] = useState([]);
 
-    const addToHistory = (transcript) => {
-        setHistory([...history, transcript]);
+  useEffect(() => {
+    const loadUserHistory = () => {
+      if (currentUser) {
+        const userHistory = JSON.parse(localStorage.getItem(`history_${currentUser.name}`)) || [];
+        setHistory(userHistory);
+      }
     };
+    loadUserHistory();
+  }, [currentUser]);
 
-    const deleteFromHistory = (index) => {
-        setHistory(history.filter((_, i) => i !== index));
-    };
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem(`history_${currentUser.name}`, JSON.stringify(history));
+    }
+  }, [history, currentUser]);
 
-    // Новая функция для редактирования элемента истории
-    const editHistory = (index, updatedTranscript) => {
-        setHistory(
-            history.map((item, i) => (i === index ? updatedTranscript : item))
-        );
-    };
+  const addToHistory = (result) => {
+    const currentDate = new Date().toISOString().split('T')[0]; // Форматируем дату как "yyyy-mm-dd"
+    setHistory((prevHistory) => [...prevHistory, { text: result, date: currentDate }]);
+  };
 
-    return (
-        <HistoryContext.Provider value={{ history, addToHistory, deleteFromHistory, editHistory }}>
-            {children}
-        </HistoryContext.Provider>
+  const deleteFromHistory = (index) => {
+    setHistory((prevHistory) => prevHistory.filter((_, i) => i !== index));
+  };
+
+  const editHistory = (index, newTranscript) => {
+    setHistory((prevHistory) =>
+      prevHistory.map((item, i) => (i === index ? { ...item, text: newTranscript } : item))
     );
+  };
+
+  return (
+    <HistoryContext.Provider value={{ history, addToHistory, deleteFromHistory, editHistory }}>
+      {children}
+    </HistoryContext.Provider>
+  );
 };
