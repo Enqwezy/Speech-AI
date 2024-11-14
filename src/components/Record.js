@@ -2,6 +2,7 @@
 import React, { useState, useContext } from 'react';
 import { HistoryContext } from '../contexts/HistoryContext';
 
+
 const Record = () => {
   const [transcript, setTranscript] = useState('');
   const [audioFile, setAudioFile] = useState(null);
