@@ -1,6 +1,7 @@
 // components/Register.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Auth.css'; // Import CSS styles
 
 function Register() {
   const [name, setName] = useState('');
@@ -17,9 +18,9 @@ function Register() {
   };
 
   return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
+    <div className="auth-container">
       <h2>Регистрация</h2>
-      <form onSubmit={handleRegister}>
+      <form className="auth-form" onSubmit={handleRegister}>
         <input
           type="text"
           placeholder="Имя пользователя"

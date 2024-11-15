@@ -5,23 +5,24 @@ function Feedback() {
   const [name, setName] = useState('');
   const [feedback, setFeedback] = useState('');
   const [feedbackList, setFeedbackList] = useState([]);
-  
+
   // Загружаем отзывы из localStorage при первом рендере
   useEffect(() => {
     const storedFeedback = JSON.parse(localStorage.getItem('feedbackList')) || [];
     setFeedbackList(storedFeedback);
   }, []);
 
-  // Сохраняем отзывы в localStorage при каждом обновлении списка
-  useEffect(() => {
-    localStorage.setItem('feedbackList', JSON.stringify(feedbackList));
-  }, [feedbackList]);
-
+  // Функция для добавления нового отзыва
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Создаём новый отзыв и добавляем его в список
-    const newFeedback = { name, feedback };
-    setFeedbackList([...feedbackList, newFeedback]);
+    // Создаем новый отзыв
+    const newFeedback = { name, feedback, id: Date.now() };
+    const updatedFeedbackList = [...feedbackList, newFeedback];
+    setFeedbackList(updatedFeedbackList);
+
+    // Сохраняем обновленный список отзывов в localStorage
+    localStorage.setItem('feedbackList', JSON.stringify(updatedFeedbackList));
+
     // Очищаем поля формы после отправки
     setName('');
     setFeedback('');
@@ -49,8 +50,8 @@ function Feedback() {
       
       <h3>Отзывы пользователей</h3>
       <ul>
-        {feedbackList.map((item, index) => (
-          <li key={index}>
+        {feedbackList.map((item) => (
+          <li key={item.id}>
             <strong>{item.name}</strong>: {item.feedback}
           </li>
         ))}

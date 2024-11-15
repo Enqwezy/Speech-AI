@@ -1,6 +1,7 @@
 // components/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Auth.css'; // Import CSS styles
 
 function Login({ setUser }) {
   const [name, setName] = useState('');
@@ -10,7 +11,9 @@ function Login({ setUser }) {
   const handleLogin = (e) => {
     e.preventDefault();
     const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const existingUser = storedUsers.find((user) => user.name === name && user.password === password);
+    const existingUser = storedUsers.find(
+      (user) => user.name === name && user.password === password
+    );
 
     if (existingUser) {
       localStorage.setItem('currentUser', JSON.stringify(existingUser));
@@ -22,9 +25,9 @@ function Login({ setUser }) {
   };
 
   return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
+    <div className="auth-container">
       <h2>Вход</h2>
-      <form onSubmit={handleLogin}>
+      <form className="auth-form" onSubmit={handleLogin}>
         <input
           type="text"
           placeholder="Имя пользователя"

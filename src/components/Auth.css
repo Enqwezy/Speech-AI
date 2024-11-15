@@ -1,0 +1,113 @@
+/* Auth.css */
+
+/* Full-screen animated gradient background */
+body,
+.auth-background {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: linear-gradient(120deg, #8ec5fc, #e0c3fc);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Gradient animation */
+@keyframes gradientBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.auth-background {
+    animation: gradientBackground 12s ease infinite;
+    background-size: 200% 200%;
+}
+
+/* Card styles for login/register form */
+.auth-container {
+    position: relative;
+    padding: 40px;
+    width: 90%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.auth-container:hover {
+    transform: scale(1.05);
+}
+
+/* Title styles */
+.auth-container h2 {
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #4b5d67;
+}
+
+/* Input styles */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.auth-form input {
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #d0d0d0;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+.auth-form input:focus {
+    border-color: #8ec5fc;
+    outline: none;
+}
+
+/* Button styles */
+.auth-form button {
+    padding: 12px;
+    font-size: 1.1rem;
+    background-color: #8ec5fc;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.auth-form button:hover {
+    background-color: #5e84e2;
+    transform: scale(1.05);
+}
+
+/* Link to register */
+.auth-container p {
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
+.auth-container a {
+    color: #8ec5fc;
+    text-decoration: none;
+}
+
+.auth-container a:hover {
+    text-decoration: underline;
+}
