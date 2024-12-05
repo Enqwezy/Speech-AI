@@ -1,12 +1,12 @@
-// Record.js
 import React, { useState, useContext } from 'react';
 import { HistoryContext } from '../contexts/HistoryContext';
-
+import { uploadAudioFile, transcribeAudio, checkTranscriptionStatus } from '../contexts/assemblyAI';
 
 const Record = () => {
   const [transcript, setTranscript] = useState('');
   const [audioFile, setAudioFile] = useState(null);
   const [videoLink, setVideoLink] = useState('');
+  const [loading, setLoading] = useState(false);
   const { addToHistory } = useContext(HistoryContext);
 
   // Функция для распознавания речи через микрофон
@@ -40,28 +40,39 @@ const Record = () => {
   };
 
   // Функция для обработки аудиофайла
-  // Функция для обработки аудиофайла
-const handleAudioProcessing = () => {
-  if (!audioFile) {
-    alert("Загрузите аудиофайл перед преобразованием.");
-    return;
-  }
+  const handleAudioProcessing = async () => {
+    if (!audioFile) {
+      alert("Загрузите аудиофайл перед преобразованием.");
+      return;
+    }
 
-  const reader = new FileReader();
-  reader.onload = (event) => {
-    const audioData = event.target.result;
+    setLoading(true);
 
-    // Используем audioData, например, выводим его в консоль
-    console.log('Аудиоданные загружены:', audioData);
+    try {
+      // Загрузка файла
+      const audioUrl = await uploadAudioFile(audioFile);
 
-    const mockText = 'Преобразованный текст из аудиофайла';
-    setTranscript(mockText);
-    addToHistory(mockText);
+      // Запуск транскрипции
+      const transcription = await transcribeAudio(audioUrl);
+
+      // Проверка статуса
+      let transcriptionData;
+      do {
+        transcriptionData = await checkTranscriptionStatus(transcription.id);
+        await new Promise((resolve) => setTimeout(resolve, 5000)); // Ждем 5 секунд перед повторной проверкой
+      } while (transcriptionData.status !== 'completed');
+
+      // Успешная обработка
+      setTranscript(transcriptionData.text);
+      addToHistory(transcriptionData.text);
+
+    } catch (error) {
+      console.error("Ошибка при обработке аудиофайла:", error);
+      alert("Произошла ошибка при преобразовании аудио.");
+    } finally {
+      setLoading(false);
+    }
   };
-
-  reader.readAsArrayBuffer(audioFile);
-};
-
 
   // Функция для обработки видео по ссылке
   const handleVideoLinkProcessing = () => {
@@ -70,6 +81,7 @@ const handleAudioProcessing = () => {
       return;
     }
 
+    // Симуляция преобразования текста
     const mockVideoText = 'Преобразованный текст из видео по ссылке';
     setTranscript(mockVideoText);
     addToHistory(mockVideoText);
@@ -77,22 +89,26 @@ const handleAudioProcessing = () => {
 
   return (
     <div className="record-container">
-      <h1>Запись и загрузка аудио</h1>
+      <h1>Запись и преобразование</h1>
 
-      {/* Секция для записи */}
+      {/* Секция записи речи */}
       <div className="record-section">
+        <h3>Распознавание речи</h3>
         <button onClick={handleSpeechRecognition}>Начать запись</button>
-        <p>{transcript}</p>
       </div>
 
-      {/* Секция для загрузки аудиофайла */}
+      {/* Секция загрузки аудиофайла */}
       <div className="upload-section">
+        <h3>Загрузка аудиофайла</h3>
         <input type="file" accept="audio/*" onChange={handleAudioUpload} />
-        <button onClick={handleAudioProcessing}>Преобразовать файл</button>
+        <button onClick={handleAudioProcessing} disabled={loading}>
+          {loading ? 'Обработка...' : 'Преобразовать файл'}
+        </button>
       </div>
 
-      {/* Секция для ввода ссылки на видео */}
+      {/* Секция обработки видео по ссылке */}
       <div className="video-link-section">
+        <h3>Обработка видео</h3>
         <input
           type="text"
           placeholder="Введите ссылку на видео (YouTube, TikTok, Instagram)"
@@ -101,6 +117,14 @@ const handleAudioProcessing = () => {
         />
         <button onClick={handleVideoLinkProcessing}>Преобразовать видео</button>
       </div>
+
+      {/* Секция результата */}
+      {transcript && (
+        <div className="result-section">
+          <h3>Преобразованный текст:</h3>
+          <p>{transcript}</p>
+        </div>
+      )}
     </div>
   );
 };

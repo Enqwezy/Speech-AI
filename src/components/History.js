@@ -1,6 +1,6 @@
-// src/components/History.js
 import React, { useContext, useState } from 'react';
 import { HistoryContext } from '../contexts/HistoryContext';
+import './HistoryPage.css';
 
 // Функция для форматирования даты
 const formatDate = (dateStr) => {
@@ -39,30 +39,31 @@ const HistoryPage = () => {
     }, {});
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div className="history-page">
             <h1>Тарих беті</h1>
             <p>Список всех преобразованных текстов по дате:</p>
             {Object.keys(groupedHistory).map((dateLabel) => (
-                <div key={dateLabel}>
-                    <h3>{dateLabel}</h3>
-                    <ul>
+                <div key={dateLabel} className="history-group">
+                    <h3 className="history-group-title">{dateLabel}</h3>
+                    <ul className="history-list">
                         {groupedHistory[dateLabel].map((item, index) => (
-                            <li key={index} style={{ marginBottom: '10px' }}>
+                            <li key={index} className="history-item">
                                 {editingIndex === index ? (
                                     <input
                                         type="text"
                                         value={newTranscript}
                                         onChange={(e) => setNewTranscript(e.target.value)}
+                                        className="history-edit-input"
                                     />
                                 ) : (
-                                    <span>{item.text}</span>
+                                    <span className="history-text">{item.text}</span>
                                 )}
                                 {editingIndex === index ? (
-                                    <button onClick={() => handleSave(index)}>Сохранить</button>
+                                    <button onClick={() => handleSave(index)} className="history-save-btn">Сохранить</button>
                                 ) : (
-                                    <button onClick={() => handleEdit(index)}>Редактировать</button>
+                                    <button onClick={() => handleEdit(index)} className="history-edit-btn">Редактировать</button>
                                 )}
-                                <button onClick={() => deleteFromHistory(index)}>Удалить</button>
+                                <button onClick={() => deleteFromHistory(index)} className="history-delete-btn">Удалить</button>
                             </li>
                         ))}
                     </ul>
